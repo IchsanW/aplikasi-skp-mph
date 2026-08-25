@@ -6,6 +6,59 @@
     <title>SKP - {{ position_name }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
+        /* Navbar / Top Header Styling */
+        .top-header {
+            background-color: #1e293b;
+            color: #ffffff;
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #0284c7;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+        .top-header .brand {
+            font-weight: bold;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .top-header .nav-links {
+            display: flex;
+            gap: 12px;
+        }
+        .top-header .nav-link {
+            color: #cbd5e1;
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+        .top-header .nav-link:hover {
+            background-color: #334155;
+            color: #ffffff;
+        }
+        .top-header .nav-link.active {
+            background-color: #0284c7;
+            color: #ffffff;
+            font-weight: 600;
+        }
+    </style>
+
+    <!-- Masukkan Elemen Navigation ini tepat di paling atas dalam <body> sebelum judul Dashboard -->
+    <div class="top-header">
+        <div class="brand">
+            🏛️ <span>Sistem SKP & MPH AI</span>
+        </div>
+        <div class="nav-links">
+            <a href="/" class="nav-link active">📋 Dashboard SKP</a>
+            <a href="/mph/TU" class="nav-link">📊 Matriks Peran Hasil (MPH)</a>
+        </div>
+    </div> 
+    <style>
         body { background-color: #f4f6f9; font-family: Arial, sans-serif; padding: 20px; }
         .container-skp { max-width: 1250px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
         .meta-table, .skp-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 9.5pt; }
