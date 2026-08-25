@@ -9,7 +9,7 @@ app.register_blueprint(ollama_api_bp)
 
 @app.route('/')
 def index():
-    return render_template('main.html')
+    return redirect('/mph/TU')
 
 # Core route updated to handle manual forms, bulk CSV uploads, and truncation resets
 @app.route('/renstra', methods=['GET', 'POST'])
