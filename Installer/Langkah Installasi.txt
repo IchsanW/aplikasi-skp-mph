@@ -14,4 +14,8 @@
 
 5. klik dua kali 2-Jalankan-Aplikasi.bat, tunggu hingga selesai
 
-6. buka browser dan ketik http://localhost:5000
+6. download ZIP file pada https://github.com/IchsanW/aplikasi-skp-mph, unzip folder (lokasi bebas)
+
+7. jalankan file run.bat dari folder hasil unzip tersebut
+
+8. buka browser dan ketik http://localhost:5000
