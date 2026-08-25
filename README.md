@@ -1,17 +1,44 @@
-1. Download Python:
-- Unduh installer resmi Python 3.11 atau 3.12 dari python.org.
+# 🏛️ Aplikasi Penyusunan SKP & Matriks Peran Hasil (MPH) Berbasis AI Lokal
 
-2. Jalankan Installer:
-- SANGAT PENTING: Pada halaman awal instalasi, beri centang pada kotak Add python.exe to PATH di bagian bawah.
-- Klik Install Now dan tunggu hingga selesai.
+Aplikasi web privat dan offline untuk membantu penyusunan **Matriks Peran Hasil (MPH)** dan **Indikator Kinerja Individu (IKI) SKP** Aparatur Sipil Negara (ASN) sesuai dengan ketentuan **Permenpan RB No. 6 Tahun 2022** dan standar nomenklatur **Permen ATR/BPN No. 17 Tahun 2020**.
 
-3.Langkah 3: Instalasi Ollama
--Download installer Ollama untuk Windows dari situs resmi: ollama.com/download
--Jalankan file OllamaSetup.exe dan ikuti petunjuk di layar hingga selesai.
--Setelah instalasi selesai, Ollama akan berjalan otomatis di system tray (pojok kanan bawah dekat jam).
+Aplikasi ini menggunakan model Large Language Model (LLM) yang berjalan **100% lokal/offline** di komputer Anda tanpa memerlukan koneksi internet, sehingga kerahasiaan data kinerja pegawai tetap terjaga aman.
 
-4. klik dua kali 1-Installer-Otomatis.bat, tunggu hingga selesai
+---
 
-5. klik dua kali 2-Jalankan-Aplikasi.bat, tunggu hingga selesai
+## 🌟 Fitur Utama
 
-6. buka browser dan ketik http://localhost:5000
+- **Cascading Performance Matrix (MPH):** Penyusunan Rencana Hasil Kerja (RHK) otomatis yang berjenjang dari Atasan (Kakanwil/Kabag TU) ke bawahan (Kasubbag/Pelaksana).
+- **Smart Elaborate & Steering IKI (SKP):** Mengubah kata kunci draf sederhana atau tugas ad-hoc pegawai di lapangan menjadi kalimat IKI kuantitatif berstandar **SMART-C** (*Jumlah...*, *Persentase...*, *Tingkat...*).
+- **TUSI Boundary Guardrail:** Memiliki validasi otomatis untuk membelokkan atau menyesuaikan input tugas fisik agar tetap selaras dengan Tugas dan Fungsi (TUSI) jabatan resmi.
+- **100% Privat & Offline:** Menggunakan peramban lokal dan Ollama AI engine tanpa mengirim data ke server luar.
+
+---
+
+## 🖥️ Spesifikasi Sistem Minimum
+
+* **Sistem Operasi:** Windows 10 / 11 (64-bit)
+* **RAM:** Minimum 8 GB (Disarankan 16 GB)
+* **Penyimpanan:** Minimal 10 GB ruang kosong (untuk model AI)
+
+---
+
+## 🚀 Panduan Instalasi Cepat (Pengguna Baru)
+
+### Langkah 1: Persiapan Aplikasi Utama (Diinstal Sekali Saja)
+
+1. **Install Python (v3.11 atau v3.12):**
+   - Unduh dari [python.org](https://www.python.org/downloads/).
+   - ⚠️ **SANGAT PENTING:** Saat membuka installer, beri centang pada opsi **`Add python.exe to PATH`** di bagian bawah sebelum mengklik *Install Now*.
+2. **Install Ollama AI Engine:**
+   - Unduh dan jalankan installer dari [ollama.com/download](https://ollama.com/download).
+
+---
+
+### Langkah 2: Unduh & Setup Otomatis
+
+1. Download repositori ini dengan mengklik tombol **`Code`** (warna hijau di kanan atas) $\rightarrow$ pilih **`Download ZIP`**.
+2. Ekstrak file ZIP ke dalam folder di komputer Anda.
+3. Klik **2 kali** pada file:
+   ```text
+   1-Installer-Otomatis.bat
