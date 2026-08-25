@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKP - IKU Cascading System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            font-size: 16pt;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+        .meta-table, .skp-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 10pt;
+        }
+        .meta-table th, .meta-table td, .skp-table th, .skp-table td {
+            border: 1px solid #444;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        .meta-table th {
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+        .section-header {
+            background-color: #e6e6e6;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .action-container {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+        .btn-trigger {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 11pt;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .btn-trigger:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Sasaran Kinerja Pegawai (SKP) Cascading Dashboard</h2>
+    
+    <div class="action-container">
+        <button class="btn-trigger" id="cascadeBtn">Generate Cascading & SMART-C Matrix</button>
+    </div>
+
+    <table class="meta-table">
+        <tr>
+            <th colspan="2" style="width: 50%;">PEGAWAI YANG DINILAI</th>
+            <th colspan="2" style="width: 50%;">PEJABAT PENILAI KINERJA</th>
+        </tr>
+        <tr>
+            <td style="width: 15%;">NAMA</td>
+            <td id="employee_name">ICHSAN WIBAWA, S.Kom., M.Eng., M.T.</td>
+            <td style="width: 15%;">NAMA</td>
+            <td id="reviewer_name">NURUS SHOLICHIN, A.Ptnh., M.M.</td>
+        </tr>
+        <tr>
+            <td>NIP</td>
+            <td>198003282006041005</td>
+            <td>NIP</td>
+            <td>196906281989031007</td>
+        </tr>
+        <tr>
+            <td>PANGKAT / GOL</td>
+            <td>Pembina / IV/a</td>
+            <td>PANGKAT / GOL</td>
+            <td>Pembina Utama Muda / IV/c</td>
+        </tr>
+        <tr>
+            <td>JABATAN</td>
+            <td>KEPALA BAGIAN TATA USAHA</td>
+            <td>JABATAN</td>
+            <td>KEPALA KANTOR WILAYAH BPN PROVINSI KEPULAUAN RIAU</td>
+        </tr>
+        <tr>
+            <td>UNIT KERJA</td>
+            <td>BAGIAN TATA USAHA</td>
+            <td>UNIT KERJA</td>
+            <td>KANTOR WILAYAH BPN PROVINSI KEPULAUAN RIAU</td>
+        </tr>
+    </table>
+
+    <table class="skp-table">
+        <thead>
+            <tr class="section-header" style="background-color: #d9d9d9;">
+                <th style="width: 5%; text-align: center;">NO</th>
+                <th style="width: 25%;">RENCANA HASIL KERJA PIMPINAN YANG DIINTERVENSI</th>
+                <th style="width: 25%;">RENCANA HASIL KERJA</th>
+                <th style="width: 10%; text-align: center;">ASPEK</th>
+                <th style="width: 25%;">INDIKATOR KINERJA INDIVIDU (IKI)</th>
+                <th style="width: 10%; text-align: center;">TARGET TAHUNAN</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="section-header">
+                <td colspan="6">A. UTAMA</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">1</td>
+                <td>(Automated Intervened Higher Goal)</td>
+                <td>(Generated Branch Result)</td>
+                <td style="text-align: center;">Kuantitatif</td>
+                <td>(AI Generated SMART-C Individual Performance Indicator)</td>
+                <td style="text-align: center;">-</td>
+            </tr>
+            <tr class="section-header">
+                <td colspan="6">B. TAMBAHAN</td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">-</td>
+                <td>-</td>
+                <td>-</td>
+                <td style="text-align: center;">-</td>
+                <td>-</td>
+                <td style="text-align: center;">-</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.getElementById('cascadeBtn').addEventListener('click', function() {
+        alert('Initiating automated multi-level cascading sequence using local Qwen2.5 via Ollama...');
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKP - {{ position_name }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body { background-color: #f4f6f9; font-family: Arial, sans-serif; padding: 20px; }
+        .container-skp { max-width: 1250px; margin: 0 auto; background: #ffffff; padding: 25px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .meta-table, .skp-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 9.5pt; }
+        .meta-table th, .meta-table td, .skp-table th, .skp-table td { border: 1px solid #444; padding: 8px; vertical-align: top; }
+        .meta-table th, .section-header { background-color: #e6e6e6; font-weight: bold; }
+        
+        .iki-item { 
+            background: #fdfdfd; 
+            border: 1px solid #e0e0e0; 
+            border-radius: 4px; 
+            padding: 8px; 
+            margin-bottom: 8px; 
+            position: relative;
+        }
+        .iki-item:last-child { margin-bottom: 0; }
+        .cell-actions { margin-top: 4px; display: flex; gap: 4px; }
+        .btn-xs { font-size: 0.7rem; padding: 2px 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container-skp">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="m-0 fw-bold">SASARAN KINERJA PEGAWAI (SKP) INDIVIDU</h4>
+        <a href="/mph/TU" class="btn btn-outline-secondary btn-sm">⬅️ Kembali ke MPH</a>
+    </div>
+
+    <!-- Metadata Header Table -->
+    <table class="meta-table mb-4">
+        <tr>
+            <th colspan="2" style="width: 50%;">PEGAWAI YANG DINILAI</th>
+            <th colspan="2" style="width: 50%;">PEJABAT PENILAI KINERJA</th>
+        </tr>
+        <tr>
+            <td style="width: 15%;">JABATAN</td>
+            <td class="fw-bold text-primary">{{ position_name }}</td>
+            <td style="width: 15%;">JABATAN</td>
+            <td class="fw-bold">
+                {% if position_name == 'Kepala Bagian Tata Usaha' %}
+                    KEPALA KANTOR WILAYAH BPN PROVINSI KEPULAUAN RIAU
+                {% else %}
+                    KEPALA BAGIAN TATA USAHA
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>UNIT KERJA</td>
+            <td>{{ division_name }}</td>
+            <td>UNIT KERJA</td>
+            <td>KANTOR WILAYAH BPN PROVINSI KEPULAUAN RIAU</td>
+        </tr>
+    </table>
+
+    <!-- SKP Main Table -->
+    <table class="skp-table">
+        <thead>
+            <tr class="section-header text-center">
+                <th style="width: 4%;">NO</th>
+                <th style="width: 28%;">RENCANA HASIL KERJA PIMPINAN YANG DIINTERVENSI</th>
+                <th style="width: 28%;">RENCANA HASIL KERJA (RHK)</th>
+                <th style="width: 40%;">INDIKATOR KINERJA INDIVIDU (IKI) & TARGET</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="section-header">
+                <td colspan="4">A. UTAMA</td>
+            </tr>
+            {% for row in skp_rows %}
+            <tr>
+                <td class="text-center">{{ row.no }}</td>
+                <td>{{ row.rhk_pimpinan }}</td>
+                <td class="fw-semibold text-dark">{{ row.rhk_pegawai }}</td>
+                
+                <!-- Multi-IKI Container Cell -->
+                <td class="iki-container-cell" data-code="{{ row.superior_code }}" data-rhk="{{ row.rhk_pegawai }}">
+                    <div class="iki-list-wrapper">
+                        {% for iki in row.iki_list %}
+                        <div class="iki-item">
+                            <div class="d-flex justify-content-between align-items-start gap-2">
+                                <div class="view-mode flex-grow-1">
+                                    <span class="iki-text">{{ iki.iki_text }}</span>
+                                    <div class="cell-actions">
+                                        <button class="btn btn-xs btn-outline-primary" onclick="enableIkiEdit(this)">✏️ Edit</button>
+                                        <button class="btn btn-xs btn-outline-secondary" onclick="rerollIki(this)">🎲 Reroll</button>
+                                        <button class="btn btn-xs btn-outline-danger ms-auto" onclick="deleteIkiItem(this)">🗑️ Hapus</button>
+                                    </div>
+                                </div>
+                                <div class="edit-mode d-none flex-grow-1">
+                                    <textarea class="form-control form-control-sm mb-1 iki-input" rows="2">{{ iki.iki_text }}</textarea>
+                                    <button class="btn btn-xs btn-success py-0" onclick="saveIki(this)">Save</button>
+                                    <button class="btn btn-xs btn-light py-0" onclick="cancelIkiEdit(this)">Cancel</button>
+                                </div>
+                                <div class="target-badge text-nowrap align-self-center ps-2 border-start">
+                                    <span class="badge bg-secondary">{{ iki.target }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Bottom Action Button to Add New IKI -->
+                    <div class="mt-2 text-end">
+                        <button class="btn btn-xs btn-success fw-bold px-2 py-1" onclick="addNewIkiItem(this)">
+                            ➕ Tambah IKI
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+            {% if not skp_rows %}
+            <tr>
+                <td colspan="4" class="text-center text-muted italic py-3">Belum ada RHK yang diintervensi pada MPH untuk jabatan ini.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function enableIkiEdit(btn) {
+        const item = btn.closest('.iki-item');
+        item.querySelector('.view-mode').classList.add('d-none');
+        item.querySelector('.edit-mode').classList.remove('d-none');
+    }
+
+    function cancelIkiEdit(btn) {
+        const item = btn.closest('.iki-item');
+        item.querySelector('.view-mode').classList.remove('d-none');
+        item.querySelector('.edit-mode').classList.add('d-none');
+    }
+
+    function saveIki(btn) {
+        const item = btn.closest('.iki-item');
+        const newVal = item.querySelector('.iki-input').value;
+        item.querySelector('.iki-text').innerText = newVal;
+        cancelIkiEdit(btn);
+    }
+
+    function deleteIkiItem(btn) {
+        const wrapper = btn.closest('.iki-list-wrapper');
+        if (wrapper.querySelectorAll('.iki-item').length > 1) {
+            btn.closest('.iki-item').remove();
+        } else {
+            alert('Minimal harus ada 1 Indikator Kinerja Individu (IKI) untuk setiap RHK.');
+        }
+    }
+
+    // Requests Ollama to draft a new unique SMART-C IKI for the additional row
+    function addNewIkiItem(btn) {
+        const cell = btn.closest('.iki-container-cell');
+        const wrapper = cell.querySelector('.iki-list-wrapper');
+        const rhkPegawai = cell.getAttribute('data-rhk');
+        const superiorCode = cell.getAttribute('data-code');
+
+        // Temporary loading placeholder item
+        const tempId = Date.now();
+        const newItemHtml = `
+            <div class="iki-item" id="item-${tempId}">
+                <div class="d-flex justify-content-between align-items-start gap-2">
+                    <div class="view-mode flex-grow-1">
+                        <span class="iki-text text-muted"><em>🎲 AI sedang merumuskan IKI tambahan...</em></span>
+                        <div class="cell-actions d-none">
+                            <button class="btn btn-xs btn-outline-primary" onclick="enableIkiEdit(this)">✏️ Edit</button>
+                            <button class="btn btn-xs btn-outline-secondary" onclick="rerollIki(this)">🎲 Reroll</button>
+                            <button class="btn btn-xs btn-outline-danger ms-auto" onclick="deleteIkiItem(this)">🗑️ Hapus</button>
+                        </div>
+                    </div>
+                    <div class="edit-mode d-none flex-grow-1">
+                        <textarea class="form-control form-control-sm mb-1 iki-input" rows="2"></textarea>
+                        <button class="btn btn-xs btn-success py-0" onclick="saveIki(this)">Save</button>
+                        <button class="btn btn-xs btn-light py-0" onclick="cancelIkiEdit(this)">Cancel</button>
+                    </div>
+                    <div class="target-badge text-nowrap align-self-center ps-2 border-start">
+                        <span class="badge bg-secondary">100%</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        wrapper.insertAdjacentHTML('beforeend', newItemHtml);
+
+        // Fetch new formulation from backend API
+        fetch('/api/reroll-iki', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                position_name: "{{ position_name }}",
+                superior_code: superiorCode,
+                rhk_pegawai: rhkPegawai
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            const newItem = document.getElementById(`item-${tempId}`);
+            if (data.status === 'success') {
+                newItem.querySelector('.iki-text').innerText = data.new_iki;
+                newItem.querySelector('.iki-input').value = data.new_iki;
+            } else {
+                newItem.querySelector('.iki-text').innerText = `Jumlah laporan/berkas ${rhkPegawai.lower()} yang diselesaikan sesuai SOP per triwulan`;
+            }
+            newItem.querySelector('.cell-actions').classList.remove('d-none');
+        })
+        .catch(err => {
+            console.error(err);
+            const newItem = document.getElementById(`item-${tempId}`);
+            newItem.querySelector('.iki-text').innerText = `Jumlah dokumen pendukung ${rhkPegawai} yang disusun tepat waktu`;
+            newItem.querySelector('.cell-actions').classList.remove('d-none');
+        });
+    }
+
+    function rerollIki(btn) {
+        const item = btn.closest('.iki-item');
+        const cell = btn.closest('.iki-container-cell');
+        const textSpan = item.querySelector('.iki-text');
+        const currentIkiText = textSpan.innerText; // <-- Tangkap input manual/terakhir user
+
+        textSpan.innerHTML = '<em>🎲 Generating alternative IKI...</em>';
+
+        fetch('/api/reroll-iki', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                position_name: "{{ position_name }}",
+                superior_code: cell.getAttribute('data-code'),
+                rhk_pegawai: cell.getAttribute('data-rhk'),
+                current_iki: currentIkiText
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                textSpan.innerText = data.new_iki;
+                item.querySelector('.iki-input').value = data.new_iki;
+            } else {
+                textSpan.innerText = currentIkiText;
+            }
+        })
+        .catch(err => {
+            textSpan.innerText = currentIkiText;
+            console.error(err);
+        });
+    }
+</script>
+
+</body>
+</html>

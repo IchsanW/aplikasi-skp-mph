@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Data Feed - Renstra Database</title>
+    <!-- Integrated Bootstrap 5 CSS CDN to properly render the global navbar framework just like mph.html -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f6f9; color: #333; margin: 0; padding: 0; }
+        .container-main { max-width: 1300px; margin: 20px auto; background: #ffffff; padding: 20px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .split-layout { display: flex; gap: 20px; margin-top: 20px; }
+        .panel-left { width: 35%; background: #f8f9fa; padding: 15px; border-radius: 4px; border: 1px solid #ddd; }
+        .panel-right { width: 65%; }
+        h2, h3 { text-transform: uppercase; margin-top: 0; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; margin-bottom: 4px; font-weight: bold; font-size: 9pt; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 6px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+        .btn-custom { border: none; padding: 8px 15px; font-weight: bold; cursor: pointer; border-radius: 4px; font-size: 10pt; text-decoration: none; display: inline-block; }
+        .btn-custom-success { background-color: #28a745; color: white; }
+        .btn-custom-primary { background-color: #007bff; color: white; width: 100%; }
+        .btn-custom-danger { background-color: #dc3545; color: white; }
+        .btn-custom-warning { background-color: #ffc107; color: #212529; font-size: 8pt; padding: 4px 8px; }
+        .data-table { width: 100%; border-collapse: collapse; font-size: 9pt; }
+        .data-table th, .data-table td { border: 1px solid #444; padding: 6px; text-align: left; vertical-align: top; }
+        .data-table th { background-color: #f2f2f2; color: #333; }
+        /* Renamed from .nav-link to .back-link to completely eliminate styling collision with Bootstrap navbar nodes */
+        .back-link { display: inline-block; margin-bottom: 15px; color: #007bff; text-decoration: none; font-weight: bold; }
+        .divider { border-top: 1px solid #ddd; margin: 20px 0; }
+
+        /* Pop-up Edit Modal Styling */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fff; margin: 5% auto; padding: 20px; border-radius: 4px; width: 40%; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px; }
+        .modal-header h3 { margin: 0; }
+        .close-btn { font-size: 20px; font-weight: bold; cursor: pointer; border: none; background: none; }
+    </style>
+</head>
+<body>
+    
+<!-- Main Global Navigation Bar (Now fully rendering correctly due to Bootstrap context integration) -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow-sm">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand fw-bold text-warning" href="#">🎯 Cascading IKI Engine</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#globalNavbar" aria-controls="globalNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="globalNavbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.path == '/renstra' %}active fw-bold{% endif %}" href="/renstra">📋 Renstra IKU</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if 'mph' in request.path %}active fw-bold{% endif %}" href="/mph/TU">📊 Matriks Peran Hasil (TU)</a>
+                </li>
+            </ul>
+            <div class="d-flex align-items-center">
+                <span class="badge bg-secondary text-white px-3 py-2">Role: Performance Admin (Kabag TU)</span>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<div class="container-main">
+    <!-- Updated class designation to avoid template style override bugs -->
+    <!--<a href="/" class="back-link">← Back to SKP Dashboard</a>-->
+    <h2>Strategic Data Feed Management (Renstra & IKK)</h2>
+    
+    <div class="split-layout">
+        <!-- Control and Inputs Panel -->
+        <div class="panel-left">
+            <h3>⚙️ Bulk CSV Upload</h3>
+            <form action="/renstra" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="upload">
+                <div class="form-group">
+                    <label>Choose CSV File</label>
+                    <input type="file" name="file" accept=".csv" required>
+                </div>
+                <button type="submit" class="btn-custom btn-custom-success" style="width: 100%;">Upload & Parse Feed</button>
+            </form>
+            
+            <div class="divider"></div>
+            
+            <h3>📝 Manual Single Entry</h3>
+            <form action="/renstra" method="POST">
+                <input type="hidden" name="action" value="manual">
+                <div class="form-group">
+                    <label>Hierarchical Level</label>
+                    <select name="level" class="form-select" style="font-size: 9pt; padding: 4px;">
+                        <option value="Kementerian">Kementerian (Eselon I / Pusat)</option>
+                        <option value="Kanwil">Kantor Wilayah (Eselon II)</option>
+                        <option value="Kantah">Kantor Pertanahan (Eselon III)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Indicator Code (Unique Identifier)</label>
+                    <input type="text" name="code" required placeholder="e.g., IKK-01 or IKU-12">
+                </div>
+                <div class="form-group">
+                    <label>Rencana Hasil Kerja / Goal Title</label>
+                    <textarea name="title" rows="2" required placeholder="Description of the strategic target..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Evaluation Aspect</label>
+                    <select name="aspect" class="form-select" style="font-size: 9pt; padding: 4px;">
+                        <option value="Kuantitas Maksimal">Kuantitas Maksimal</option>
+                        <option value="Kualitas Maksimal">Kualitas Maksimal</option>
+                        <option value="Waktu Minimal">Waktu Minimal</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Target Value</label>
+                    <input type="text" name="target" required placeholder="e.g., 90%, AA, or 12 Bulan">
+                </div>
+                <div class="form-group">
+                    <label>Responsible Post Owner (SOTK Base)</label>
+                    <input type="text" name="owner_post" required placeholder="e.g., Kepala Kantor Wilayah">
+                </div>
+                <div class="form-group">
+                    <label>Parent Indicator Code (Intervened Parent)</label>
+                    <input type="text" name="parent_code" placeholder="Leave empty if top level, e.g., IKU-10">
+                </div>
+                <button type="submit" class="btn-custom btn-custom-primary">Save Indicator</button>
+            </form>
+            
+            <div class="divider"></div>
+            
+            <form action="/renstra" method="POST" onsubmit="return confirm('Are you sure you want to clear all data feeds?');">
+                <input type="hidden" name="action" value="clear">
+                <button type="submit" class="btn-custom btn-custom-danger" style="width: 100%;">⚠️ Truncate & Reset Database</button>
+            </form>
+        </div>
+
+        <!-- Master Data View Panel -->
+        <div class="panel-right">
+            <h3>📋 Master Database Records</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th style="width: 4%;">No</th>
+                        <th style="width: 10%;">Level</th>
+                        <th style="width: 8%;">Code</th>
+                        <th style="width: 32%;">Rencana Hasil Kerja (RHK) / Target Goal</th>
+                        <th style="width: 12%;">Aspect</th>
+                        <th style="width: 8%;">Target</th>
+                        <th style="width: 10%;">Owner Post</th>
+                        <th style="width: 8%;">Parent</th>
+                        <th style="width: 8%;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if iku_list %}
+                        {% for iku in iku_list %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td><strong>{{ iku[1] }}</strong></td>
+                            <td><code>{{ iku[2] }}</code></td>
+                            <td>{{ iku[3] }}</td>
+                            <td>{{ iku[4] }}</td>
+                            <td>{{ iku[5] }}</td>
+                            <td>{{ iku[6] }}</td>
+                            <td><span style="color: blue;">{{ iku[7] if iku[7] else '-' }}</span></td>
+                            <td>
+                                <button type="button" class="btn-custom btn-custom-warning" 
+                                        data-id="{{ iku[0] }}"
+                                        data-level="{{ iku[1] }}"
+                                        data-code="{{ iku[2] }}"
+                                        data-title="{{ iku[3]|e }}"
+                                        data-aspect="{{ iku[4] }}"
+                                        data-target="{{ iku[5] }}"
+                                        data-owner="{{ iku[6] }}"
+                                        data-parent="{{ iku[7] if iku[7] else '' }}"
+                                        onclick="openEditModal(this)">Edit</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="9" style="text-align: center; color: #888; padding: 20px;">No strategic data feed found. Upload a CSV or fill the manual entry form.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Record Modal Interface Box -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>✏️ Edit Indicator Data</h3>
+            <button class="close-btn" onclick="closeEditModal()">&times;</button>
+        </div>
+        <form action="/renstra" method="POST">
+            <input type="hidden" name="action" value="update">
+            <input type="hidden" id="edit_id" name="id">
+            
+            <div class="form-group">
+                <label>Hierarchical Level</label>
+                <select id="edit_level" name="level" class="form-select" style="font-size: 9pt; padding: 4px;">
+                    <option value="Kementerian">Kementerian (Eselon I / Pusat)</option>
+                    <option value="Kanwil">Kantor Wilayah (Eselon II)</option>
+                    <option value="Kantah">Kantor Pertanahan (Eselon III)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Indicator Code</label>
+                <input type="text" id="edit_code" name="code" required>
+            </div>
+            <div class="form-group">
+                <label>Rencana Hasil Kerja / Goal Title</label>
+                <textarea id="edit_title" name="title" rows="3" required></textarea>
+            </div>
+            <div class="form-group">
+                <label>Evaluation Aspect</label>
+                <select id="edit_aspect" name="aspect" class="form-select" style="font-size: 9pt; padding: 4px;">
+                    <option value="Kuantitas Maksimal">Kuantitas Maksimal</option>
+                    <option value="Kualitas Maksimal">Kualitas Maksimal</option>
+                    <option value="Waktu Minimal">Waktu Minimal</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Target Value</label>
+                <input type="text" id="edit_target" name="target" required>
+            </div>
+            <div class="form-group">
+                <label>Responsible Post Owner</label>
+                <input type="text" id="edit_owner" name="owner_post" required>
+            </div>
+            <div class="form-group">
+                <label>Parent Indicator Code</label>
+                <input type="text" id="edit_parent" name="parent_code">
+            </div>
+            <button type="submit" class="btn-custom btn-custom-primary" style="margin-top: 10px;">Apply Updates</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openEditModal(buttonElement) {
+        document.getElementById('edit_id').value = buttonElement.getAttribute('data-id');
+        document.getElementById('edit_level').value = buttonElement.getAttribute('data-level');
+        document.getElementById('edit_code').value = buttonElement.getAttribute('data-code');
+        document.getElementById('edit_title').value = buttonElement.getAttribute('data-title');
+        document.getElementById('edit_aspect').value = buttonElement.getAttribute('data-aspect');
+        document.getElementById('edit_target').value = buttonElement.getAttribute('data-target');
+        document.getElementById('edit_owner').value = buttonElement.getAttribute('data-owner');
+        document.getElementById('edit_parent').value = buttonElement.getAttribute('data-parent');
+        
+        document.getElementById('editModal').style.display = 'block';
+    }
+
+    function closeEditModal() {
+        document.getElementById('editModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        let modal = document.getElementById('editModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
+
+</body>
+</html>
